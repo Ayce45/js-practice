@@ -1,167 +1,169 @@
-var selectElementsStartingWithA = function (array) {
-    return array.filter(item => item[0] === "a");
+const selectElementsStartingWithA = function (array) {
+    return array.filter((item) => item.startsWith('a'));
 }
 
-var selectElementsStartingWithVowel = function (array) {
-    return array.filter(item => /^[aeiou]/i.test(item.charAt(0)));
+const selectElementsStartingWithVowel = function (array) {
+    return array.filter(value => value.match('^[aieou/i].*'));
 }
 
-var removeNullElements = function (array) {
-    return array.filter(item => item !== null);
+const removeNullElements = function (array) {
+    return array.filter(value => ![null].includes(value))
 }
 
-var removeNullAndFalseElements = function (array) {
-    return array.filter(item => item !== null && item !== false);
+const removeNullAndFalseElements = function (array) {
+    return array.filter(value => ![null, false].includes(value))
 }
 
-var reverseWordsInArray = function (array) {
-    return array.map(item => item.split('').reverse().join(''));
+const revStr = (string) => string.split("").reverse().join("")
+
+const reverseWordsInArray = function (array) {
+    return array.map(revStr)
 }
 
-var everyPossiblePair = function(array) {
-    return [...array.flatMap(
-        (value, index) => array.slice(index + 1).map(word => [value, word].sort())
-    ).sort()]
+const everyPossiblePair = function (array) {
+    return array.reduce((acc, value, index) => acc.concat(array.slice(index + 1).map(word => [value, word].sort())), []).sort();
 }
 
-var allElementsExceptFirstThree = function (array) {
-    return array.filter((element, index) => index > 2);
+const allElementsExceptFirstThree = function (array) {
+    return array.slice(3)
 }
 
-var addElementToBeginning = function (array, element) {
-    array.unshift(element);
-    return array;
+const addElementToBeginning = function (array, element) {
+    return [element, ...array]
 }
 
-var sortByLastLetter = function (array) {
-    return array.sort((a, b) => a.charCodeAt(a.length - 1) - b.charCodeAt(b.length - 1));
+const sortByLastLetter = function (array) {
+    return array.sort((a, b) => a.charCodeAt(a.length - 1) - b.charCodeAt(b.length - 1))
 }
 
-var getFirstHalf = function (string) {
-    return string.slice(0, Math.round(string.length / 2));
+const getFirstHalf = function (string) {
+    return string.slice(0, Math.ceil(string.length / 2))
 }
 
-var makeNegative = function (number) {
-    return number > 0 ? number * -1 : number
+const makeNegative = function (number) {
+    return number > 0 ? -number : number
 }
 
-var numberOfPalindromes = function (array) {
-    const isPalindrome = (str) => {
-        const reverse = str.split('').reverse().join('')
-        return reverse === str
-    }
-    let counter = 0;
-    array.forEach((item) => {
-        if (isPalindrome(item))
-            counter++;
-    })
-    return counter;
+const numberOfPalindromes = function (array) {
+    return (array.filter(value => value === revStr(value))).length
 }
 
-var shortestWord = function (array) {
-    return array.sort((a, b) => a.length - b.length).shift();
+const shortestWord = function (array) {
+    return array.reduce((prev, curr) => curr.length < prev.length ? curr : prev)
 }
 
-var longestWord = function (array) {
-    return array.sort((a, b) => b.length - a.length).shift();
+const longestWord = function (array) {
+    return array.reduce((prev, curr) => curr.length > prev.length ? curr : prev)
 }
 
-var sumNumbers = function (array) {
-    return array.reduce((a, b) => a + b)
+const sumNumbers = function (array) {
+    return array.reduce((prev, curr) => prev + curr)
 }
 
-var repeatElements = function (array) {
-    let clonedArray = [...array];
-    return clonedArray.concat(array);
+const repeatElements = function (array) {
+    return [...array, ...array]
 }
 
-var stringToNumber = function (string) {
-    return Number(string);
+const stringToNumber = function (string) {
+    return Number(string)
 }
 
-var calculateAverage = function (array) {
-    return array.reduce((a, b) => a + b) / array.length
+const calculateAverage = function (array) {
+    return array.reduce((prev, curr) => prev + curr) / array.length
 }
 
-var getElementsUntilGreaterThanFive = function (array) {
-    return array.filter((item) => item <= 5)
+const getElementsUntilGreaterThanFive = function (array) {
+    return array.slice(0, array.findIndex(value => value > 5))
 }
 
-var convertArrayToObject = function (array) {
-    let object = {};
-    for (let i = 0; i < array.length; i += 2) {
-        object[array[i]] = array[i + 1]
-    }
+const convertArrayToObject = function (array) {
+    const object = {}
+    array.forEach((value, index) => !(index % 2) ? object[value] = array[index + 1] : '')
     return object
 }
 
-var getAllLetters = function (array) {
-    let result = [];
-    array.forEach((item) => {
-        result.push(item.split(''));
-    })
-    return result.flat(2).sort().filter((item, pos, self) => {
-        return self.indexOf(item) === pos;
-    });
+const getAllLetters = function (array) {
+    return [...new Set(array.map(value => value.split("")).flatMap(x => x).sort())]
 }
 
-var swapKeysAndValues = function (object) {
-    return Object.keys(object).reduce((ret, key) => {
-        ret[object[key]] = key;
-        return ret;
-    }, {});
+const swapKeysAndValues = function (object) {
+    const newObj = {}
+    Object.keys(object).forEach(key => newObj[object[key]] = key)
+    return newObj
 }
 
-var sumKeysAndValues = function (object) {
-    let sum = 0;
-    for (let key in object) {
-        sum = stringToNumber(sum) + stringToNumber(key) + stringToNumber(object[key]);
-    }
-    return sum;
+const sumKeysAndValues = function (object) {
+    let count = 0
+    Object.keys(object).forEach(key => count += Number(object[key]) + Number(key))
+    return count
 }
 
-var removeCapitals = function (string) {
-    return string.split('').filter((item) => item === item.toLowerCase()).join('');
+const removeCapitals = function (string) {
+    return string.replace(/[A-Z]/g, '');
 }
 
-var roundUp = function (number) {
+const roundUp = function (number) {
     return Math.ceil(number)
 }
 
-var formatDateNicely = function (date) {
-    return new Date(date).toLocaleDateString()
+const formatDateNicely = function (date) {
+    return date.toLocaleDateString('fr-FR')
 }
 
-var getDomainName = function (string) {
-    string = string.split('@')[1].split('.')
-    string.pop()
-    return string.join('.');
+const getDomainName = function (string) {
+    return string.match('(?<=@)[^.]*.[^.]*(?=\\.)')[0]
 }
 
-var titleize = function (string) {
-    return null;
+const capitalize = (string) => string.replace(/^\w/, c => c.toUpperCase());
+
+const titleize = function (string) {
+    const ignore = ['and', 'the'];
+    string = string.split('. ').map(capitalize).join('. ');
+    string = string.split(' ').map(word => !ignore.includes(word) ? capitalize(word) : word).join(' ')
+    return string
 }
 
-var checkForSpecialCharacters = function (string) {
-    return /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(string)
+const checkForSpecialCharacters = function (string) {
+    const regex = /\W|_/g
+    return regex.test(string)
 }
 
-var squareRoot = function (number) {
-    return Math.sqrt(number);
+const squareRoot = function (number) {
+    return Math.sqrt(number)
 }
 
-var factorial = function (number) {
-    return (number<2)?1:factorial(number-1)*number
+const factorial = function (number) {
+    return (number < 2) ? 1 : factorial(number - 1) * number
 }
 
-var findAnagrams = function (string) {
-    return 'Write your method here';
+const findAnagrams = function (string) {
+    if (string.length < 2) {
+        return [string];
+    }
+    const anagrams = [];
+    let before, current, after;
+    let shortWord, subAnagrams, newEntry;
+
+    for (let i = 0; i < string.length; i++) {
+        before = string.slice(0, i);
+        current = string[i];
+        after = string.slice(i + 1, string.length + 1);
+        shortWord = before + after;
+        subAnagrams = findAnagrams(shortWord);
+
+        for (let j = 0; j < subAnagrams.length; j++) {
+            newEntry = current + subAnagrams[j];
+            anagrams.push(newEntry);
+        }
+    }
+    return anagrams;
 }
 
-var convertToCelsius = function (number) {
-    return Math.ceil((number - 32) / 1.8)
+const convertToCelsius = function (number) {
+    return Math.ceil((number - 32) * 5 / 9)
 }
 
-var letterPosition = function (array) {
-    return array.map(item => item.toUpperCase().charCodeAt(0) - 64)
+const letterPosition = function (array) {
+    const ASCII_LETTER_STARTING_POSITION = 64;
+    return array.map(item => item.toUpperCase().charCodeAt(0) - ASCII_LETTER_STARTING_POSITION)
 }
